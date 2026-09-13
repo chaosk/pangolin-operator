@@ -20,7 +20,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	gatewayv1 "sigs.k8s.io/gateway-api/apis/v1"
-	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 
 	pangolinv1alpha1 "github.com/home-operations/pangolin-operator/api/v1alpha1"
 	"github.com/home-operations/pangolin-operator/internal/autodiscover"
@@ -515,7 +514,7 @@ func (r *Reconciler) processService(ctx context.Context, site *pangolinv1alpha1.
 }
 
 func (r *Reconciler) ReconcileTCPRoute(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	var route gatewayv1alpha2.TCPRoute
+	var route gatewayv1.TCPRoute
 	if err := r.Get(ctx, req.NamespacedName, &route); err != nil {
 		if client.IgnoreNotFound(err) == nil {
 			return r.deleteOwnedResources(ctx, "tcproute", req.Name)
@@ -546,7 +545,7 @@ func (r *Reconciler) ReconcileTCPRoute(ctx context.Context, req ctrl.Request) (c
 	return ctrl.Result{}, nil
 }
 
-func (r *Reconciler) processTCPRoute(ctx context.Context, site *pangolinv1alpha1.NewtSite, cfg *pangolinv1alpha1.AutoDiscoverSpec, route *gatewayv1alpha2.TCPRoute) error {
+func (r *Reconciler) processTCPRoute(ctx context.Context, site *pangolinv1alpha1.NewtSite, cfg *pangolinv1alpha1.AutoDiscoverSpec, route *gatewayv1.TCPRoute) error {
 	logger := log.FromContext(ctx)
 	spec, err := autodiscover.BuildTCPRouteSpec(route, route.GetAnnotations(), cfg, site.Name)
 	if err != nil {
@@ -560,7 +559,7 @@ func (r *Reconciler) processTCPRoute(ctx context.Context, site *pangolinv1alpha1
 	return nil
 }
 
-func (r *Reconciler) resolveSiteForTCPRoute(ctx context.Context, annotations map[string]string, route *gatewayv1alpha2.TCPRoute) (*pangolinv1alpha1.NewtSite, *pangolinv1alpha1.AutoDiscoverSpec, string, bool, error) {
+func (r *Reconciler) resolveSiteForTCPRoute(ctx context.Context, annotations map[string]string, route *gatewayv1.TCPRoute) (*pangolinv1alpha1.NewtSite, *pangolinv1alpha1.AutoDiscoverSpec, string, bool, error) {
 	return r.resolveSite(ctx, annotations,
 		func(cfg *pangolinv1alpha1.AutoDiscoverSpec) bool { return cfg.EnableTCPRouteDiscovery },
 		func(cfg *pangolinv1alpha1.AutoDiscoverSpec) bool {
@@ -630,7 +629,7 @@ func (r *Reconciler) scanHTTPRoutes(ctx context.Context, site *pangolinv1alpha1.
 }
 
 func (r *Reconciler) scanTCPRoutes(ctx context.Context, site *pangolinv1alpha1.NewtSite, cfg *pangolinv1alpha1.AutoDiscoverSpec, p string) error {
-	var tcpRoutes gatewayv1alpha2.TCPRouteList
+	var tcpRoutes gatewayv1.TCPRouteList
 	if err := r.List(ctx, &tcpRoutes); err != nil {
 		return fmt.Errorf("list TCPRoutes: %w", err)
 	}
@@ -807,7 +806,7 @@ func (r *Reconciler) SetupWithManager(mgr ctrl.Manager) error {
 	}
 
 	if err := ctrl.NewControllerManagedBy(mgr).
-		For(&gatewayv1alpha2.TCPRoute{}, builder.WithPredicates(tcpRoutePredicate)).
+		For(&gatewayv1.TCPRoute{}, builder.WithPredicates(tcpRoutePredicate)).
 		Complete(reconcile.Func(r.ReconcileTCPRoute)); err != nil {
 		return fmt.Errorf("setup TCPRoute controller: %w", err)
 	}
@@ -833,7 +832,7 @@ func hasParentRef(obj client.Object) bool {
 }
 
 func hasTCPRouteParentRef(obj client.Object) bool {
-	route, ok := obj.(*gatewayv1alpha2.TCPRoute)
+	route, ok := obj.(*gatewayv1.TCPRoute)
 	if !ok {
 		return false
 	}

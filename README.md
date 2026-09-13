@@ -1,6 +1,6 @@
 # pangolin-operator
 
-Project archived, check out https://github.com/fosrl/pangolin-kube-controller
+Fork of the archived [home-operations/pangolin-operator](https://github.com/home-operations/pangolin-operator), maintained for Gateway API **1.6+** (TCPRoute `v1` on the standard channel). Upstream pinned Gateway API 1.5.1 and always watched `TCPRoute` `v1alpha2`, which is unserved in Gateway API 1.6 standard installs.
 
 A Kubernetes operator that manages [Pangolin](https://github.com/fosrl/pangolin) tunnel infrastructure through native Kubernetes resources. It provisions Pangolin sites, manages the [newt](https://github.com/fosrl/newt) tunnel Deployment, and continuously reconciles public and private resources against the Pangolin API.
 
@@ -479,7 +479,7 @@ Then annotate resources with `myorg/site-ref`, `myorg/enabled`, etc.
 ### Install via Helm
 
 ```bash
-helm install pangolin-operator oci://ghcr.io/home-operations/charts/pangolin-operator \
+helm install pangolin-operator oci://ghcr.io/chaosk/charts/pangolin-operator \
   --namespace pangolin-operator --create-namespace \
   --set pangolin.apiUrl=https://pangolin.example.com \
   --set pangolin.apiKey=<key> \
@@ -499,7 +499,7 @@ spec:
     interval: 15m
     ref:
         tag: 0.1.0
-    url: oci://ghcr.io/home-operations/charts/pangolin-operator
+    url: oci://ghcr.io/chaosk/charts/pangolin-operator
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease

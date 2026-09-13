@@ -11,7 +11,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	gatewayv1 "sigs.k8s.io/gateway-api/apis/v1"
-	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 
 	pangolinv1alpha1 "github.com/home-operations/pangolin-operator/api/v1alpha1"
 	"github.com/home-operations/pangolin-operator/internal/controller/shared"
@@ -569,11 +568,11 @@ func serviceProtocol(p corev1.Protocol) string {
 	return protocolTCP
 }
 
-func TCPRouteReferencesGateway(route *gatewayv1alpha2.TCPRoute, gatewayName, gatewayNamespace string) bool {
+func TCPRouteReferencesGateway(route *gatewayv1.TCPRoute, gatewayName, gatewayNamespace string) bool {
 	return parentRefsMatch(route.Spec.ParentRefs, gatewayName, gatewayNamespace)
 }
 
-func BuildTCPRouteSpec(route *gatewayv1alpha2.TCPRoute, annotations map[string]string, cfg *pangolinv1alpha1.AutoDiscoverSpec, siteRefFallback string) (pangolinv1alpha1.PublicResourceSpec, error) {
+func BuildTCPRouteSpec(route *gatewayv1.TCPRoute, annotations map[string]string, cfg *pangolinv1alpha1.AutoDiscoverSpec, siteRefFallback string) (pangolinv1alpha1.PublicResourceSpec, error) {
 	r := newResolver(annotations, cfg)
 
 	siteRef, ok := r.siteRef(siteRefFallback)

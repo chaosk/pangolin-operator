@@ -6,12 +6,12 @@ type: application
 kubeVersion: ">=1.26.0"
 version: 0.0.0
 appVersion: "0.0.0"
-home: https://github.com/home-operations/pangolin-operator
+home: https://github.com/chaosk/pangolin-operator
 sources:
-  - https://github.com/home-operations/pangolin-operator
+  - https://github.com/chaosk/pangolin-operator
 maintainers:
-  - name: home-operations
-    email: contact@home-operations.com
+  - name: chaosk
+    email: ksocha@ksocha.com
 keywords:
   - pangolin
   - newt

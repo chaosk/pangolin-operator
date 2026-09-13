@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/home-operations/pangolin-operator
+  repository: ghcr.io/chaosk/pangolin-operator
   pullPolicy: IfNotPresent
   tag: ""
 

@@ -7,7 +7,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	gatewayv1 "sigs.k8s.io/gateway-api/apis/v1"
-	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 
 	pangolinv1alpha1 "github.com/home-operations/pangolin-operator/api/v1alpha1"
 )
@@ -967,18 +966,18 @@ func TestServiceProtocol(t *testing.T) {
 	}
 }
 
-func newTCPRouteWithBackendRef(svcName, namespace string, port *gatewayv1.PortNumber) *gatewayv1alpha2.TCPRoute {
+func newTCPRouteWithBackendRef(svcName, namespace string, port *gatewayv1.PortNumber) *gatewayv1.TCPRoute {
 	var ns *gatewayv1.Namespace
 	if namespace != "" {
 		n := gatewayv1.Namespace(namespace)
 		ns = &n
 	}
-	return &gatewayv1alpha2.TCPRoute{
+	return &gatewayv1.TCPRoute{
 		ObjectMeta: metav1.ObjectMeta{Name: testTCPRouteName, Namespace: testNamespace},
-		Spec: gatewayv1alpha2.TCPRouteSpec{
-			Rules: []gatewayv1alpha2.TCPRouteRule{
+		Spec: gatewayv1.TCPRouteSpec{
+			Rules: []gatewayv1.TCPRouteRule{
 				{
-					BackendRefs: []gatewayv1alpha2.BackendRef{
+					BackendRefs: []gatewayv1.BackendRef{
 						{
 							BackendObjectReference: gatewayv1.BackendObjectReference{
 								Name:      gatewayv1.ObjectName(svcName),
@@ -993,10 +992,10 @@ func newTCPRouteWithBackendRef(svcName, namespace string, port *gatewayv1.PortNu
 	}
 }
 
-func newTCPRoute(parentRefs []gatewayv1.ParentReference) *gatewayv1alpha2.TCPRoute {
-	return &gatewayv1alpha2.TCPRoute{
+func newTCPRoute(parentRefs []gatewayv1.ParentReference) *gatewayv1.TCPRoute {
+	return &gatewayv1.TCPRoute{
 		ObjectMeta: metav1.ObjectMeta{Name: testTCPRouteName, Namespace: testNamespace},
-		Spec: gatewayv1alpha2.TCPRouteSpec{
+		Spec: gatewayv1.TCPRouteSpec{
 			CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: parentRefs},
 		},
 	}
