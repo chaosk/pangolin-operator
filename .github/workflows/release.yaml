@@ -38,8 +38,9 @@ jobs:
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          # Prefer PAT with write:packages when GITHUB_TOKEN gets write_package denied.
+          password: ${{ secrets.GHCR_TOKEN || github.token }}
 
       - name: Extract metadata
         id: meta
@@ -98,8 +99,9 @@ jobs:
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          # Prefer PAT with write:packages when GITHUB_TOKEN gets write_package denied.
+          password: ${{ secrets.GHCR_TOKEN || github.token }}
 
       - name: Extract metadata
         id: meta
@@ -145,8 +147,9 @@ jobs:
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          # Prefer PAT with write:packages when GITHUB_TOKEN gets write_package denied.
+          password: ${{ secrets.GHCR_TOKEN || github.token }}
 
       - name: Upload Dependency Snapshot
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
@@ -207,8 +210,9 @@ jobs:
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          # Prefer PAT with write:packages when GITHUB_TOKEN gets write_package denied.
+          password: ${{ secrets.GHCR_TOKEN || github.token }}
 
       - name: Publish Helm chart to GHCR
         run: |-
